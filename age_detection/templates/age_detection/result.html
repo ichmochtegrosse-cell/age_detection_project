@@ -1,177 +1,93 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultat - Détection d'âge</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
-            color: white;
-            padding: 40px 20px;
-        }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .subtitle {
-            text-align: center;
-            color: #a0aec0;
-            margin-bottom: 35px;
-        }
-        .images-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .image-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-        }
-        .image-card h3 {
-            color: #a0aec0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-        .image-card img {
-            width: 100%;
-            border-radius: 10px;
-            max-height: 300px;
-            object-fit: contain;
-        }
-        .results-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        .results-section h2 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #00d2ff;
-        }
-        .detection-card {
-            background: rgba(255,255,255,0.07);
-            border-radius: 12px;
-            padding: 18px 22px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-left: 4px solid #00d2ff;
-        }
-        .detection-left { display: flex; align-items: center; gap: 15px; }
-        .detection-emoji { font-size: 2.5rem; }
-        .detection-info h3 { font-size: 1.3rem; font-weight: 700; }
-        .detection-info p { color: #a0aec0; font-size: 0.9rem; margin-top: 3px; }
-        .confidence-badge {
-            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        .no-face {
-            text-align: center;
-            padding: 30px;
-            color: #a0aec0;
-        }
-        .no-face .icon { font-size: 3rem; margin-bottom: 10px; }
-        .btn-back {
-            display: block;
-            text-align: center;
-            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
-            color: white;
-            text-decoration: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        .btn-back:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,210,255,0.3);
-        }
-        .summary-bar {
-            background: rgba(0,210,255,0.1);
-            border: 1px solid rgba(0,210,255,0.3);
-            border-radius: 12px;
-            padding: 15px 22px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .summary-bar .icon { font-size: 1.5rem; }
-        @media (max-width: 600px) {
-            .images-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgeVision AI — Résultat</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b14;--card:#141d2e;--border:rgba(99,179,237,0.15);--accent1:#63b3ed;--accent2:#b794f4;--accent3:#68d391;--text:#e2e8f0;--muted:#718096;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:32px 20px;position:relative;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,179,237,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.container{max-width:980px;margin:0 auto;position:relative;z-index:1;}
+.page-header{text-align:center;margin-bottom:36px;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:#0f1623;border:1px solid var(--border);color:var(--muted);text-decoration:none;padding:8px 18px;border-radius:999px;font-size:0.82rem;margin-bottom:20px;transition:all 0.2s;}
+.back-btn:hover{color:var(--accent1);border-color:var(--accent1);}
+h1{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--accent1) 60%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:0.88rem;}
+.images-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
+.img-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;text-align:center;position:relative;overflow:hidden;}
+.img-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent1),transparent);}
+.img-label{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.img-card img{width:100%;border-radius:10px;max-height:300px;object-fit:contain;}
+.summary{background:rgba(99,179,237,0.06);border:1px solid rgba(99,179,237,0.2);border-radius:12px;padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:0.92rem;}
+.det-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 24px;margin-bottom:14px;position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;transition:transform 0.2s,border-color 0.2s;}
+.det-card:hover{transform:translateX(4px);border-color:rgba(99,179,237,0.35);}
+.det-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent1),var(--accent2));}
+.det-emoji{font-size:3rem;line-height:1;}
+.det-info h3{font-size:1.3rem;font-weight:700;margin-bottom:4px;}
+.det-info p{color:var(--muted);font-size:0.84rem;line-height:1.5;}
+.det-right{text-align:right;}
+.age-big{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:6px;}
+.conf-pill{display:inline-block;background:rgba(99,179,237,0.12);border:1px solid rgba(99,179,237,0.25);border-radius:999px;padding:4px 12px;font-size:0.78rem;color:var(--accent1);font-weight:600;}
+.aging-wrap{margin-top:10px;}
+.aging-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-bottom:5px;}
+.aging-bar{height:5px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;}
+.aging-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent3),var(--accent1),var(--accent2));}
+.no-face{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px;text-align:center;}
+.no-face .icon{font-size:3.5rem;margin-bottom:14px;}
+.no-face h3{font-size:1.1rem;margin-bottom:8px;}
+.no-face p{color:var(--muted);font-size:0.88rem;line-height:1.6;}
+@media(max-width:600px){.images-grid{grid-template-columns:1fr;}.det-card{grid-template-columns:auto 1fr;}.det-right{grid-column:1/-1;}}
+</style>
 </head>
 <body>
 <div class="container">
-    <h1>🔍 Résultat de l'analyse</h1>
-    <p class="subtitle">Détection par Intelligence Artificielle · Modèle Caffe</p>
-
-    <div class="images-grid">
-        <div class="image-card">
-            <h3>📷 Image originale</h3>
-            <img src="{{ original_image }}" alt="Image originale">
-        </div>
-        <div class="image-card">
-            <h3>🧠 Image analysée</h3>
-            <img src="{{ result_image }}" alt="Image annotée">
-        </div>
+  <div class="page-header">
+    <a href="{% url 'index' %}" class="back-btn">← Nouvelle analyse</a>
+    <h1>Résultat de l'analyse</h1>
+    <p class="page-sub">Intelligence Artificielle · Caffe DNN + Analyse texture peau</p>
+  </div>
+  <div class="images-grid">
+    <div class="img-card">
+      <div class="img-label">📷 Image originale</div>
+      <img src="{{ original_image }}" alt="Original">
     </div>
-
-    <div class="results-section">
-        <h2>📊 Résultats de détection</h2>
-
-        {% if detections %}
-        <div class="summary-bar">
-            <span class="icon">👥</span>
-            <span><strong>{{ nb_faces }} visage{{ nb_faces|pluralize }}</strong> détecté{{ nb_faces|pluralize }}</span>
-        </div>
-
-        {% for detection in detections %}
-        <div class="detection-card">
-            <div class="detection-left">
-                <div class="detection-emoji">{{ detection.emoji }}</div>
-                <div class="detection-info">
-                    <h3>{{ detection.category }}</h3>
-                    <p>Tranche d'âge estimée : {{ detection.age_range }} ans · Visage n°{{ detection.face_num }}</p>
-                </div>
-            </div>
-            <div class="confidence-badge">{{ detection.confidence }}%</div>
-        </div>
-        {% endfor %}
-
-        {% else %}
-        <div class="no-face">
-            <div class="icon">😶</div>
-            <p>Aucun visage détecté dans cette image.</p>
-            <p style="margin-top:8px; font-size:0.85rem;">Essayez avec une image plus nette, de face et bien éclairée.</p>
-        </div>
-        {% endif %}
+    <div class="img-card">
+      <div class="img-label">🧠 Image analysée par IA</div>
+      <img src="{{ result_image }}" alt="Résultat">
     </div>
-
-    <a href="{% url 'index' %}" class="btn-back">⬅️ Analyser une autre image</a>
+  </div>
+  {% if detections %}
+  <div class="summary">
+    <span style="font-size:1.3rem">👥</span>
+    <span><strong>{{ nb_faces }} visage{{ nb_faces|pluralize }}</strong> détecté{{ nb_faces|pluralize }} et analysé{{ nb_faces|pluralize }} avec succès</span>
+  </div>
+  {% for d in detections %}
+  <div class="det-card">
+    <div class="det-emoji">{{ d.emoji }}</div>
+    <div class="det-info">
+      <h3>{{ d.category }}</h3>
+      <p>Tranche estimée : <strong>{{ d.age_range }} ans</strong> &nbsp;·&nbsp; Visage n°{{ d.face_num }}</p>
+      <div class="aging-wrap">
+        <div class="aging-label"><span>Score de vieillissement cutané</span><span>{{ d.aging_score }}%</span></div>
+        <div class="aging-bar"><div class="aging-fill" style="width:{{ d.aging_score }}%"></div></div>
+      </div>
+    </div>
+    <div class="det-right">
+      <div class="age-big">~{{ d.estimated_age }}<span style="font-size:1rem;font-weight:400"> ans</span></div>
+      <div class="conf-pill">Fiabilité {{ d.confidence }}%</div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="no-face">
+    <div class="icon">😶</div>
+    <h3>Aucun visage détecté</h3>
+    <p>Essayez avec une photo de face, bien éclairée,<br>sans masque ni occlusion du visage.</p>
+  </div>
+  {% endif %}
 </div>
 </body>
 </html>
