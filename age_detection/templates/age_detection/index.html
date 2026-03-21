@@ -10,7 +10,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,179,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(99,179,237,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
-body::after{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(99,179,237,0.08) 0%,transparent 70%);pointer-events:none;}
 .wrapper{max-width:520px;width:100%;position:relative;z-index:1;}
 .badge-top{display:inline-flex;align-items:center;gap:8px;background:rgba(99,179,237,0.08);border:1px solid rgba(99,179,237,0.2);border-radius:999px;padding:6px 16px;font-size:0.75rem;color:var(--accent1);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
@@ -19,7 +18,7 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:80
 .subtitle{color:var(--muted);font-size:0.95rem;line-height:1.6;margin-bottom:36px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent1),transparent);}
-.drop-zone{border:1.5px dashed rgba(99,179,237,0.3);border-radius:14px;padding:44px 24px;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(99,179,237,0.02);margin-bottom:20px;}
+.drop-zone{border:1.5px dashed rgba(99,179,237,0.3);border-radius:14px;padding:44px 24px;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(99,179,237,0.02);margin-bottom:16px;}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--accent1);background:rgba(99,179,237,0.06);transform:translateY(-2px);}
 .drop-icon{width:64px;height:64px;background:rgba(99,179,237,0.1);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;transition:transform 0.3s;}
 .drop-zone:hover .drop-icon{transform:scale(1.1) rotate(-5deg);}
@@ -27,15 +26,36 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:80
 .drop-sub{color:var(--muted);font-size:0.82rem;}
 .drop-sub span{color:var(--accent1);}
 input[type=file]{display:none;}
-.selected-file{display:none;align-items:center;gap:10px;background:rgba(104,211,145,0.08);border:1px solid rgba(104,211,145,0.25);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:0.85rem;color:var(--accent3);}
-.selected-file.show{display:flex;}
-.file-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent1),var(--accent2));border:none;border-radius:12px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.25s;margin-top:4px;}
-.btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,179,237,0.25);}
+
+/* Prévisualisation image */
+.preview-wrap{display:none;margin-bottom:16px;text-align:center;}
+.preview-wrap.show{display:block;}
+.preview-wrap img{max-width:100%;max-height:220px;border-radius:12px;border:1px solid var(--border);object-fit:contain;}
+.preview-name{margin-top:8px;font-size:0.82rem;color:var(--accent3);display:flex;align-items:center;justify-content:center;gap:6px;}
+
+/* Bouton toujours visible */
+.btn{
+  display:block;
+  width:100%;
+  padding:16px;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.05rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.25s;
+  letter-spacing:0.02em;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,179,237,0.3);}
+.btn:active{transform:translateY(0);}
+
 .categories{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:28px;}
 .cat-tag{background:#0f1623;border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:5px;}
 .error-box{background:rgba(252,129,74,0.08);border:1px solid rgba(252,129,74,0.3);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:0.88rem;color:#fc814a;}
-.loading{display:none;position:fixed;inset:0;background:rgba(8,11,20,0.85);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.loading{display:none;position:fixed;inset:0;background:rgba(8,11,20,0.88);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
 .loading.show{display:flex;}
 .spinner{width:52px;height:52px;border:3px solid rgba(99,179,237,0.15);border-top-color:var(--accent1);border-radius:50%;animation:spin 0.9s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -44,36 +64,52 @@ input[type=file]{display:none;}
 </style>
 </head>
 <body>
+
 <div class="loading" id="loading">
   <div class="spinner"></div>
   <div class="loading-text">Analyse en cours…</div>
   <div class="loading-sub">Détection des visages + estimation de l'âge</div>
 </div>
+
 <div class="wrapper">
   <div class="badge-top"><span class="badge-dot"></span>Deep Learning · Caffe · OpenCV DNN</div>
   <h1>AgeVision<br>AI</h1>
-  <p class="subtitle">Détectez l'âge d'une personne à partir d'une photo grâce à l'intelligence artificielle. Analyse combinée : réseau neuronal + texture de peau.</p>
+  <p class="subtitle">Détectez l'âge d'une personne à partir d'une photo grâce à l'intelligence artificielle.</p>
+
   {% if error %}<div class="error-box">⚠️ {{ error }}</div>{% endif %}
+
   <div class="card">
     <form method="POST" action="{% url 'detect' %}" enctype="multipart/form-data" id="uploadForm">
       {% csrf_token %}
+
       <label for="imgInput">
         <div class="drop-zone" id="dropZone">
           <div class="drop-icon">📸</div>
           <div class="drop-title">Glissez votre image ici</div>
           <div class="drop-sub">ou <span>cliquez pour parcourir</span></div>
-          <div class="drop-sub" style="margin-top:8px">JPG · PNG · JPEG</div>
+          <div class="drop-sub" style="margin-top:6px">JPG · PNG · JPEG</div>
         </div>
       </label>
       <input type="file" id="imgInput" name="image" accept="image/*">
-      <div class="selected-file" id="selectedFile">
-        <span>🖼️</span>
-        <span class="file-name" id="fileName">—</span>
-        <span style="color:#718096;font-size:0.75rem" id="fileSize"></span>
+
+      <!-- Prévisualisation après sélection -->
+      <div class="preview-wrap" id="previewWrap">
+        <img id="previewImg" src="" alt="Aperçu">
+        <div class="preview-name">
+          <span>✅</span>
+          <span id="fileName">—</span>
+          <span id="fileSize" style="color:#718096"></span>
+        </div>
       </div>
-      <button type="submit" class="btn" style="margin-top:20px">🔍 &nbsp;Analyser l'image</button>
+
+      <!-- Bouton toujours affiché -->
+      <button type="submit" class="btn" id="analyzeBtn">
+        🔍 &nbsp;Analyser l'image
+      </button>
+
     </form>
   </div>
+
   <div class="categories">
     <span class="cat-tag">🧒 Enfant</span>
     <span class="cat-tag">🧑 Adolescent</span>
@@ -82,14 +118,57 @@ input[type=file]{display:none;}
     <span class="cat-tag">👴 Senior</span>
   </div>
 </div>
+
 <script>
-const input=document.getElementById('imgInput'),dropZone=document.getElementById('dropZone'),selFile=document.getElementById('selectedFile'),fileName=document.getElementById('fileName'),fileSize=document.getElementById('fileSize'),form=document.getElementById('uploadForm'),loading=document.getElementById('loading');
-function showFile(f){if(!f)return;fileName.textContent=f.name;fileSize.textContent=(f.size/1024).toFixed(0)+' KB';selFile.classList.add('show');}
-input.addEventListener('change',()=>showFile(input.files[0]));
-dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover');});
-dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
-dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('dragover');const f=e.dataTransfer.files[0];if(f){const dt=new DataTransfer();dt.items.add(f);input.files=dt.files;showFile(f);}});
-form.addEventListener('submit',()=>loading.classList.add('show'));
+const input      = document.getElementById('imgInput');
+const dropZone   = document.getElementById('dropZone');
+const previewWrap= document.getElementById('previewWrap');
+const previewImg = document.getElementById('previewImg');
+const fileName   = document.getElementById('fileName');
+const fileSize   = document.getElementById('fileSize');
+const form       = document.getElementById('uploadForm');
+const loading    = document.getElementById('loading');
+
+function showPreview(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    previewImg.src = e.target.result;
+    previewWrap.classList.add('show');
+    dropZone.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+  fileName.textContent = file.name;
+  fileSize.textContent = '(' + (file.size/1024).toFixed(0) + ' KB)';
+}
+
+input.addEventListener('change', () => showPreview(input.files[0]));
+
+dropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    showPreview(file);
+  }
+});
+
+form.addEventListener('submit', e => {
+  if (!input.files[0]) {
+    e.preventDefault();
+    alert('⚠️ Veuillez sélectionner une image avant d\'analyser.');
+    return;
+  }
+  loading.classList.add('show');
+});
 </script>
 </body>
 </html>
